@@ -7,7 +7,7 @@ export const loginUser = defineAction({
   accept: 'form',
   input: z.object({
     email: z.string().email(),
-    password: z.string(),
+    password: z.string().min(6),
     remember_me: z.boolean().optional(),
   }),
   handler: async ({ email, password, remember_me }, context) => {
