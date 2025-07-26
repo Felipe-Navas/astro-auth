@@ -1,8 +1,9 @@
 ---
+import { firebase } from '@/firebase/config'
 
+const firebaseUser = firebase.auth.currentUser
 ---
 
-<!-- component -->
 <nav class="flex justify-between px-20 py-10 items-center bg-white">
   <h1 class="text-xl text-gray-800 font-bold">Astro auth app</h1>
   <div class="flex items-center">
@@ -11,12 +12,18 @@
       <li class="font-semibold text-gray-700">
         <a href="/protected">Private Page</a>
       </li>
-      <li class="font-semibold text-gray-700">
-        <a href="/login">Login</a>
-      </li>
-      <li id="logout" class="font-semibold text-gray-700">
-        <a href="#">Logout</a>
-      </li>
+
+      {
+        firebaseUser ? (
+          <li id="logout" class="font-semibold text-gray-700">
+            <a href="#">Logout</a>
+          </li>
+        ) : (
+          <li class="font-semibold text-gray-700">
+            <a href="/login">Login</a>
+          </li>
+        )
+      }
       <li>
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -73,18 +80,14 @@
   </div>
 </nav>
 
-
 <script>
-import { actions } from "astro:actions"
+  import { actions } from 'astro:actions'
 
   const logoutElement = document.querySelector('#logout') as HTMLLIElement
 
   logoutElement?.addEventListener('click', async () => {
-
     const { data, error } = await actions.logoutUser()
 
     window.location.href = '/'
   })
-
-
 </script>
