@@ -1,7 +1,8 @@
-import { loginUser, registerUser, logoutUser } from './auth'
+import { loginUser, registerUser, logoutUser, loginWithGoogle } from './auth'
 
 export const server = {
-  registerUser,
-  logoutUser,
   loginUser,
+  loginWithGoogle,
+  logoutUser,
+  registerUser,
 }
