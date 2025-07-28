@@ -1,7 +1,8 @@
 ---
-import { firebase } from '@/firebase/config'
+// import { firebase } from '@/firebase/config'
+// const firebaseUser = firebase.auth.currentUser
 
-const firebaseUser = firebase.auth.currentUser
+const { isLoggedIn } = Astro.locals
 ---
 
 <nav class="flex justify-between px-20 py-10 items-center bg-white">
@@ -9,12 +10,16 @@ const firebaseUser = firebase.auth.currentUser
   <div class="flex items-center">
     <ul class="flex items-center space-x-6">
       <li class="font-semibold text-gray-700"><a href="/">Home</a></li>
-      <li class="font-semibold text-gray-700">
-        <a href="/protected">Private Page</a>
-      </li>
+      {
+        isLoggedIn && (
+          <li class="font-semibold text-gray-700">
+            <a href="/protected">Private Page</a>
+          </li>
+        )
+      }
 
       {
-        firebaseUser ? (
+        isLoggedIn ? (
           <li id="logout" class="font-semibold text-gray-700">
             <a href="#">Logout</a>
           </li>
