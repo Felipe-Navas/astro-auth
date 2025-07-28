@@ -3,6 +3,7 @@ import { defineMiddleware } from 'astro:middleware'
 import { firebase } from './firebase/config'
 
 const privateRoutes = ['/protected']
+const notAutenticatedRoutes = ['/login', '/register']
 
 export const onRequest = defineMiddleware((context, next: MiddlewareNext) => {
   const isLoggedIn = !!firebase.auth.currentUser
@@ -18,6 +19,14 @@ export const onRequest = defineMiddleware((context, next: MiddlewareNext) => {
     }
   }
   context.locals.isLoggedIn = isLoggedIn
+
+  if (!isLoggedIn && privateRoutes.includes(context.url.pathname)) {
+    return context.redirect('/')
+  }
+
+  if (isLoggedIn && notAutenticatedRoutes.includes(context.url.pathname)) {
+    return context.redirect('/')
+  }
 
   return next()
 })
