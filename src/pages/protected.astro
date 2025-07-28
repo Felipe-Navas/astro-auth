@@ -2,16 +2,24 @@
 import { firebase } from '@/firebase/config'
 import MainLayout from '@/layouts/MainLayout.astro'
 
-const firebaseUser = firebase.auth.currentUser
+// const firebaseUser = firebase.auth.currentUser
 
-if (!firebaseUser) {
+// if (!firebaseUser) {
+//   return Astro.redirect('/login')
+// }
+
+// await firebaseUser?.reload()
+// const { displayName, email, emailVerified, photoURL } = firebaseUser
+
+// const name = displayName ?? 'No Name'
+
+const { user, isLoggedIn } = Astro.locals
+
+if (!isLoggedIn || !user) {
   return Astro.redirect('/login')
 }
 
-await firebaseUser?.reload()
-const { displayName, email, emailVerified, photoURL } = firebaseUser
-
-const name = displayName ?? 'No Name'
+const { name, email, emailVerified, avatar } = user
 ---
 
 <MainLayout>
@@ -20,10 +28,10 @@ const name = displayName ?? 'No Name'
   >
     <div class="card w-96 mx-auto bg-white shadow-xl hover:shadow rounded">
       {
-        photoURL ? (
+        avatar ? (
           <img
             class="w-32 mx-auto rounded-full -mt-20 border-8 border-white"
-            src={photoURL}
+            src={avatar}
             alt={'Photo of ' + name}
           />
         ) : (

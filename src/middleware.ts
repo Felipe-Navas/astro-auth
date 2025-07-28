@@ -9,8 +9,15 @@ export const onRequest = defineMiddleware((context, next: MiddlewareNext) => {
 
   const user = firebase.auth.currentUser
 
+  if (user) {
+    context.locals.user = {
+      name: user.displayName ?? 'No Name',
+      email: user.email!,
+      avatar: user.photoURL ?? '',
+      emailVerified: user.emailVerified,
+    }
+  }
   context.locals.isLoggedIn = isLoggedIn
-  // context.locals.user = user
 
   return next()
 })
